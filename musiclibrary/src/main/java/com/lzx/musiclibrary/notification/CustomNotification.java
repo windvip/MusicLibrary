@@ -2,7 +2,6 @@ package com.lzx.musiclibrary.notification;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -12,14 +11,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.NavUtils;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.widget.RemoteViews;
 
 import com.lzx.musiclibrary.MusicService;
-import com.lzx.musiclibrary.R;
 import com.lzx.musiclibrary.aidl.model.SongInfo;
 import com.lzx.musiclibrary.constans.State;
 import com.lzx.musiclibrary.playback.PlaybackManager;
@@ -368,10 +364,10 @@ public class CustomNotification implements IMediaNotification {
         String contentTitle = mSongInfo != null ? mSongInfo.getSongName() : mNotificationCreater.getContentTitle();
         String contentText = mSongInfo != null ? mSongInfo.getArtist() : mNotificationCreater.getContentText();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createNotificationChannel();
-        }
-        notificationBuilder = new NotificationCompat.Builder(mService, CHANNEL_ID);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            createNotificationChannel();
+//        }
+        notificationBuilder = new NotificationCompat.Builder(mService);
 
         notificationBuilder
                 .setSmallIcon(smallIconRes)
@@ -457,20 +453,20 @@ public class CustomNotification implements IMediaNotification {
         return pendingIntent;
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private void createNotificationChannel() {
-        if (mNotificationManager.getNotificationChannel(CHANNEL_ID) == null) {
-            NotificationChannel notificationChannel =
-                    new NotificationChannel(CHANNEL_ID,
-                            mService.getString(R.string.notification_channel),
-                            NotificationManager.IMPORTANCE_LOW);
-
-            notificationChannel.setDescription(
-                    mService.getString(R.string.notification_channel_description));
-
-            mNotificationManager.createNotificationChannel(notificationChannel);
-        }
-    }
+//    @RequiresApi(Build.VERSION_CODES.O)
+//    private void createNotificationChannel() {
+//        if (mNotificationManager.getNotificationChannel(CHANNEL_ID) == null) {
+//            NotificationChannel notificationChannel =
+//                    new NotificationChannel(CHANNEL_ID,
+//                            mService.getString(R.string.notification_channel),
+//                            NotificationManager.IMPORTANCE_LOW);
+//
+//            notificationChannel.setDescription(
+//                    mService.getString(R.string.notification_channel_description));
+//
+//            mNotificationManager.createNotificationChannel(notificationChannel);
+//        }
+//    }
 
     private int getResourceId(String name, String className) {
         return res.getIdentifier(name, className, packageName);

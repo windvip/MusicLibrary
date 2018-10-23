@@ -2,7 +2,6 @@ package com.lzx.musiclibrary.notification;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -10,9 +9,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
@@ -185,10 +182,10 @@ public class SystemNotification implements IMediaNotification {
             String contentTitle = mSongInfo != null ? mSongInfo.getSongName() : mNotificationCreater.getContentTitle();
             String contentText = mSongInfo != null ? mSongInfo.getArtist() : mNotificationCreater.getContentText();
             //创建NotificationChannel
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                createNotificationChannel();
-            }
-            notificationBuilder = new NotificationCompat.Builder(mService, CHANNEL_ID);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                createNotificationChannel();
+//            }
+            notificationBuilder = new NotificationCompat.Builder(mService);//CHANNEL_ID
             //上一首action
             notificationBuilder.addAction(R.drawable.ic_skip_previous_white_24dp,
                     mService.getString(R.string.label_previous),
@@ -205,7 +202,7 @@ public class SystemNotification implements IMediaNotification {
             }
             //构建Builder
             notificationBuilder
-                    .setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
+                    .setStyle(new android.support.v7.app.NotificationCompat.MediaStyle()
                             .setShowActionsInCompactView(0, 1, 2)
                             .setShowCancelButton(true)
                             .setCancelButtonIntent(stopIntent)
@@ -214,7 +211,7 @@ public class SystemNotification implements IMediaNotification {
                     .setSmallIcon(R.drawable.icon_notification)
                     .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                     .setOnlyAlertOnce(true)
-                    .setColorized(true)
+//                    .setColorized(true)
                     .setContentTitle(contentTitle)
                     .setContentText(contentText)
                     .setLargeIcon(art);
@@ -323,20 +320,20 @@ public class SystemNotification implements IMediaNotification {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private void createNotificationChannel() {
-        if (mNotificationManager.getNotificationChannel(CHANNEL_ID) == null) {
-            NotificationChannel notificationChannel =
-                    new NotificationChannel(CHANNEL_ID,
-                            mService.getString(R.string.notification_channel),
-                            NotificationManager.IMPORTANCE_LOW);
-
-            notificationChannel.setDescription(
-                    mService.getString(R.string.notification_channel_description));
-
-            mNotificationManager.createNotificationChannel(notificationChannel);
-        }
-    }
+//    @RequiresApi(Build.VERSION_CODES.O)
+//    private void createNotificationChannel() {
+//        if (mNotificationManager.getNotificationChannel(CHANNEL_ID) == null) {
+//            NotificationChannel notificationChannel =
+//                    new NotificationChannel(CHANNEL_ID,
+//                            mService.getString(R.string.notification_channel),
+//                            NotificationManager.IMPORTANCE_LOW);
+//
+//            notificationChannel.setDescription(
+//                    mService.getString(R.string.notification_channel_description));
+//
+//            mNotificationManager.createNotificationChannel(notificationChannel);
+//        }
+//    }
 
     private void setStopIntent(PendingIntent pendingIntent) {
         stopIntent = pendingIntent == null ? getPendingIntent(ACTION_STOP) : pendingIntent;
