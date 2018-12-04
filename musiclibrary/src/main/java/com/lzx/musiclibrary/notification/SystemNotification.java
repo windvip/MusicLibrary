@@ -202,7 +202,7 @@ public class SystemNotification implements IMediaNotification {
             }
             //构建Builder
             notificationBuilder
-                    .setStyle(new android.support.v7.app.NotificationCompat.MediaStyle()
+                    .setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
                             .setShowActionsInCompactView(0, 1, 2)
                             .setShowCancelButton(true)
                             .setCancelButtonIntent(stopIntent)
